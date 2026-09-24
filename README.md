@@ -94,9 +94,26 @@ The website was also successfully accessed from a web browser using the EC2 publ
 
 ## Future Improvements
 
-- Configure an Apache Virtual Host
 - Connect a custom domain
 - Enable HTTPS with TLS
 - Add automated deployment
 - Containerize the application with Docker
 - Add CI/CD using GitHub Actions
+
+## Apache Virtual Host
+
+The Apache default site was disabled and a dedicated Virtual Host was configured for this project.
+
+Virtual Host configuration:
+
+- ServerName: cloud-deployment-demo.local
+- DocumentRoot: /var/www/cloud-deployment-demo/public
+- Apache default site disabled
+- Configuration validated with `apache2ctl configtest`
+- Apache reloaded successfully
+
+The Virtual Host was tested using:
+
+`curl -H "Host: cloud-deployment-demo.local" http://localhost`
+
+The website was also verified through the EC2 public IPv4 address.
