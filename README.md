@@ -1,119 +1,97 @@
 # AWS EC2 Website Deployment
 
-A simple static website deployed on an AWS EC2 Ubuntu server using Apache HTTP Server.
+A static website deployed on an AWS EC2 Ubuntu server using Apache HTTP Server. This project demonstrates cloud server provisioning, Linux administration, web server configuration, and deployment verification.
 
 ## Project Overview
 
-This project demonstrates how to deploy a static HTML/CSS website on AWS EC2.
+The website runs on Ubuntu 24.04 LTS with Apache serving the HTML and CSS files. A dedicated Apache Virtual Host is configured to serve the project from its own document root.
 
-The server runs Ubuntu 24.04 LTS with Apache configured to serve the website over HTTP.
+## Architecture
+
+```text
+Visitor's Browser
+       |
+       | HTTP :80
+       v
+AWS EC2 — Ubuntu 24.04 LTS
+       |
+       v
+Apache HTTP Server
+       |
+       v
+/var/www/cloud-deployment-demo/public
+       |
+       v
+HTML + CSS Website
+```
 
 ## Technologies Used
 
 - AWS EC2
 - Ubuntu 24.04 LTS
 - Apache HTTP Server
-- HTML5
-- CSS3
-- Git
-- GitHub
+- HTML5 and CSS3
+- Git and GitHub
 
 ## AWS Configuration
 
-### EC2
+### EC2 Instance
 
-- Operating System: Ubuntu 24.04 LTS
-- Region: Europe (Stockholm)
+- Operating system: Ubuntu 24.04 LTS
+- AWS Region: Europe (Stockholm)
 - Storage: 8 GiB gp3
 - Public IPv4 enabled
 
 ### Security Group
 
-Inbound traffic is configured for:
-
 | Protocol | Port | Source | Purpose |
 |---|---:|---|---|
-| SSH | 22 | My IP | Server administration |
-| HTTP | 80 | 0.0.0.0/0 | Website access |
-| HTTPS | 443 | 0.0.0.0/0 | Reserved for HTTPS |
+| SSH | 22 | Administrator's IP | Server administration |
+| HTTP | 80 | `0.0.0.0/0` | Public website access |
+| HTTPS | 443 | `0.0.0.0/0` | Intended for future HTTPS setup |
 
-SSH access is restricted to the administrator's IP address.
+SSH access is restricted to the administrator's IP address. HTTP is publicly accessible.
 
-HTTP is publicly accessible so visitors can access the website.
+**HTTPS note:** Port 443 being allowed by the Security Group does not enable HTTPS on its own. A TLS certificate and Apache HTTPS configuration are still required.
 
 ## Deployment
 
 ### 1. Update Ubuntu
 
-`sudo apt update`
+```bash
+sudo apt update
+```
 
 ### 2. Install Apache
 
-`sudo apt install apache2 -y`
+```bash
+sudo apt install apache2 -y
+```
 
 ### 3. Verify Apache
 
-`sudo systemctl status apache2`
+```bash
+sudo systemctl status apache2
+```
 
-### 4. Deploy Website
+### 4. Deploy Website Files
 
-The website files are copied to Apache's document root:
+The initial deployment copied the website files into Apache's document root:
 
-`sudo cp index.html style.css /var/www/html/`
+```bash
+sudo cp index.html style.css /var/www/html/
+```
 
-### 5. Test Apache
+The project was subsequently configured to use a dedicated Virtual Host and document root at `/var/www/cloud-deployment-demo/public`.
 
-`curl http://localhost`
+### 5. Test the Website Locally
 
-The website can also be accessed through the EC2 public IPv4 address.
+```bash
+curl http://localhost
+```
 
-
-## Project Structure
-
-cloud-deployment-demo/
-├── index.html
-├── style.css
-└── README.md
-
-## Testing
-
-The deployment was tested using:
-
-`curl http://localhost`
-
-The website was also successfully accessed from a web browser using the EC2 public IPv4 address.
-
-## Current Status
-
-- EC2 instance running
-- Apache installed and running
-- Website deployed successfully
-- CSS served successfully
-- Git repository configured
-- Project pushed to GitHub
-
-## Future Improvements
-
-- Connect a custom domain
-- Enable HTTPS with TLS
-- Add automated deployment
-- Containerize the application with Docker
-- Add CI/CD using GitHub Actions
+The website was also accessed through the EC2 public IPv4 address from a web browser.
 
 ## Apache Virtual Host
 
-The Apache default site was disabled and a dedicated Virtual Host was configured for this project.
-
-Virtual Host configuration:
-
-- ServerName: cloud-deployment-demo.local
-- DocumentRoot: /var/www/cloud-deployment-demo/public
-- Apache default site disabled
-- Configuration validated with `apache2ctl configtest`
-- Apache reloaded successfully
-
-The Virtual Host was tested using:
-
-`curl -H "Host: cloud-deployment-demo.local" http://localhost`
-
-The website was also verified through the EC2 public IPv4 address.
+A
