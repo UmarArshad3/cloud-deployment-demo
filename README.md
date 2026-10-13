@@ -7,6 +7,7 @@ A static website deployed on an AWS EC2 Ubuntu server using Apache HTTP Server. 
 The website runs on Ubuntu 24.04 LTS with Apache serving the HTML and CSS files. A dedicated Apache Virtual Host is configured to serve the project from its own document root.
 
 ## Architecture
+![AWS EC2 Apache deployment architecture](docs/screenshots/cloud-deployment-demo-architecture.png)
 
 ```text
 Visitor's Browser
